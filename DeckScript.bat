@@ -24,7 +24,7 @@ if "%choice%"=="4" exit
 goto menu
 
 :start_bg
-:: Запуск питона в фоне через pythonw (полностью заменяет старый Start.vbs)
+:: Запуск питона в фоне через pythonw
 start "" /B pythonw "%SCRIPT_DIR%consoleDeckScriptGui.py"
 echo.
 echo [OK] Стримдек запущен в фоне! Окно можно закрывать.
@@ -32,7 +32,7 @@ timeout /t 3 >nul
 exit
 
 :open_gui
-:: Запуск интерфейса с флагом --gui (заменяет Бинды.bat)
+:: Запуск интерфейса
 start "" python "%SCRIPT_DIR%consoleDeckScriptGui.py" --gui
 exit
 
@@ -41,11 +41,11 @@ exit
 set "startup_folder=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 set "vbs_file=%startup_folder%\ConsoleDeckScript.vbs"
 
-:: Формируем VBS-скрипт с динамическим путем и кладем его сразу в автозагрузку
+:: Формируем VBS-скрипт. Используем Chr(34) для безопасной вставки кавычек
 echo Set WshShell = CreateObject("WScript.Shell") > "%vbs_file%"
-echo WshShell.Run "pythonw """%SCRIPT_DIR%consoleDeckScriptGui.py"""", 0, False >> "%vbs_file%"
+echo WshShell.Run "pythonw " ^& Chr(34) ^& "%SCRIPT_DIR%consoleDeckScriptGui.py" ^& Chr(34), 0, False >> "%vbs_file%"
 
 echo.
-echo [OK] Скрипт успешно добавлен в автозагрузку!
+echo [OK] Скрипт успешно добавлен в автозагрузку (ошибка с кавычками исправлена)!
 timeout /t 3 >nul
 goto menu
